@@ -2,6 +2,7 @@ import os
 from os.path import join
 from distutils.util import strtobool
 import dj_database_url
+from django.db import models
 from configurations import Configuration
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -22,6 +23,7 @@ class Common(Configuration):
         'rest_framework.authtoken',  # token authentication
         'django_filters',            # for filtering rest endpoints
         'drf_auto_endpoint',
+        'field_history',
 
         # Your apps
         'applyonline.users',
@@ -38,6 +40,7 @@ class Common(Configuration):
         'django.contrib.auth.middleware.AuthenticationMiddleware',
         'django.contrib.messages.middleware.MessageMiddleware',
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
+        'field_history.middleware.FieldHistoryMiddleware',
     )
 
     ALLOWED_HOSTS = ["*"]
@@ -62,7 +65,7 @@ class Common(Configuration):
 
     # General
     APPEND_SLASH = False
-    TIME_ZONE = 'UTC'
+    TIME_ZONE = 'America/Chicago'
     LANGUAGE_CODE = 'en-us'
     # If you set this to False, Django will make some optimizations so as not
     # to load the internationalization machinery.
@@ -203,3 +206,5 @@ class Common(Configuration):
             'rest_framework.authentication.TokenAuthentication',
         )
     }
+    # django-field-history - use Integers
+    FIELD_HISTORY_OBJECT_ID_TYPE = models.UUIDField
