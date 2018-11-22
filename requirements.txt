@@ -53,3 +53,6 @@ django-field-history==0.7.0
 
 # dateutil
 python-dateutil==2.7.5
+
+# django-address
+django-address==0.2.0

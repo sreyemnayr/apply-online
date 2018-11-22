@@ -1,5 +1,6 @@
 import uuid
 from django.db import models
+from address.models import AddressField
 
 
 class Parent(models.Model):
@@ -40,4 +41,7 @@ class Family(models.Model):
     name = models.CharField('First Name', max_length=50)
     students = models.ManyToManyField('Student')
     parents = models.ManyToManyField('Parent')
+    connections = models.BooleanField('Connections to school?', default=False)
+    connections_more = models.TextField('More info', blank=True)
+    address = AddressField(on_delete=models.CASCADE, null=-True)
 

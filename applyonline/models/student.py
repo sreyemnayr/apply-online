@@ -20,3 +20,4 @@ class Student(models.Model):
     last_name = models.CharField('Last Name', max_length=50)
     dob = models.DateField('Date of Birth')
     gender = models.CharField('Gender', max_length=1, choices=GENDER_CHOICES, default=NONBINARY)
+    description = models.CharField('Describe your child', max_length=254, blank=True)

@@ -24,6 +24,7 @@ class Common(Configuration):
         'django_filters',            # for filtering rest endpoints
         'drf_auto_endpoint',
         'field_history',
+        'address',
 
         # Your apps
         'applyonline.users',
@@ -208,3 +209,5 @@ class Common(Configuration):
     }
     # django-field-history - use Integers
     FIELD_HISTORY_OBJECT_ID_TYPE = models.UUIDField
+
+    GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')

@@ -40,5 +40,5 @@ class TestApplicationModel:
 
         assert family in obj.families.all(), "Family in families?"
 
-        assert obj.percent_complete == 100, "Should now be complete"
+        assert obj.percent_complete == 100, f"Should now be complete {obj.incomplete_fields}"
         assert obj.complete is True, "Should be complete"
