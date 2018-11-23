@@ -67,8 +67,8 @@ class Application(models.Model):
     current_grade = models.IntegerField('Current grade level', choices=(*GRADE_LEVEL_CHOICES, (-999, 'No school')), default=999)
 
     # Scheduling (preschool)
-    schedule_time = models.IntegerField('Schedule preference (Times)', choices=TIME_CHOICES, max_length=2, default=0)
-    schedule_days = models.IntegerField('Schedule preference (Days)', choices=DAY_CHOICES, max_length=2, default=0)
+    schedule_time = models.IntegerField('Schedule preference (Times)', choices=TIME_CHOICES, default=0)
+    schedule_days = models.IntegerField('Schedule preference (Days)', choices=DAY_CHOICES, default=0)
     schedule_more = models.CharField('Scheduling notes', max_length=254, blank=True)
 
     # Other school applications

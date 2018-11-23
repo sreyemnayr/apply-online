@@ -21,3 +21,12 @@ class TestParentModel:
     def test_init(self):
         obj = factories.ParentFactory.create()
         assert obj.pk is not None, "Should create a new Parent instance"
+
+
+@pytest.mark.sibling
+@pytest.mark.model
+class TestSiblingModel:
+    @pytest.mark.usefixtures("django_db_reset_sequences")
+    def test_init(self):
+        obj = factories.SiblingFactory.create()
+        assert obj.pk is not None, "Should create a new Sibling instance"

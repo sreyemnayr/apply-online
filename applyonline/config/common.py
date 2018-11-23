@@ -25,6 +25,7 @@ class Common(Configuration):
         'drf_auto_endpoint',
         'field_history',
         'address',
+        'phone_field',
 
         # Your apps
         'applyonline.users',

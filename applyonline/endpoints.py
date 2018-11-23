@@ -1,6 +1,13 @@
 from drf_auto_endpoint.router import router
 
-from applyonline.models import Application
+import applyonline.models as models
 
 
-router.register(Application)
+router.register(models.Application)
+router.register(models.Student)
+router.register(models.Family)
+router.register(models.Evaluation)
+router.register(models.OtherSchool)
+router.register(models.Parent)
+router.register(models.SchoolYear)
+router.register(models.Sibling)

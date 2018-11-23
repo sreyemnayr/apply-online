@@ -54,5 +54,6 @@ django-field-history==0.7.0
 # dateutil
 python-dateutil==2.7.5
 
-# django-address
+# Address / Phone fields
 django-address==0.2.0
+django-phone-field==1.6.0

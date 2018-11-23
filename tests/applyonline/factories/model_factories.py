@@ -39,7 +39,6 @@ class ParentFactory(DjangoModelFactory):
         model = applyonline.models.Parent
 
     first_name = factory.Faker("first_name")
-    middle_name = factory.Faker("first_name")
     preferred_name = factory.Faker("first_name")
     last_name = factory.Faker("last_name")
     dob = factory.Faker("past_date")
@@ -54,4 +53,18 @@ class SchoolYearFactory(DjangoModelFactory):
     end = factory.Faker("future_date")
     open = True
 
+
+class EvaluationFactory(DjangoModelFactory):
+    class Meta:
+        model = applyonline.models.Evaluation
+
+
+class SiblingFactory(DjangoModelFactory):
+    class Meta:
+        model = applyonline.models.Sibling
+
+
+class OtherSchoolFactory(DjangoModelFactory):
+    class Meta:
+        model = applyonline.models.OtherSchool
 
