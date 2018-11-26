@@ -24,6 +24,7 @@ class Local(Common):
     INSTALLED_APPS = Common.INSTALLED_APPS
     # INSTALLED_APPS += ('django_nose',)
     INSTALLED_APPS += ("django_extensions",)
+    INSTALLED_APPS += ("export_app",)
 
     # Mail
     EMAIL_HOST = 'localhost'

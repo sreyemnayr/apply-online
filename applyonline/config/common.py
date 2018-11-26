@@ -212,3 +212,8 @@ class Common(Configuration):
     FIELD_HISTORY_OBJECT_ID_TYPE = models.UUIDField
 
     GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
+
+    # DRF-schema-adapter export settings
+    EXPORTER_ADAPTER = 'export_app.adapters.Angular2Adapter'
+    EXPORTER_FRONT_APPLICATION_NAME = 'applyonline-angular'
+    EXPORTER_ROUTER_PATH = 'applyonline.endpoints.router'

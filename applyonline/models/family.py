@@ -40,6 +40,7 @@ class Parent(models.Model):
     hometown = models.CharField('Hometown', max_length=50, blank=True)
     employer = models.CharField('Employer', max_length=50, blank=True)
     job_title = models.CharField('Job Title', max_length=50, blank=True)
+    email = models.EmailField(max_length=254)
 
 
 class Sibling(models.Model):

@@ -7,7 +7,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.db.models.signals import post_save
 from rest_framework.authtoken.models import Token
 
-from applyonline.models import Parent
+from applyonline.models import Parent, Family
 
 
 @python_2_unicode_compatible
@@ -20,7 +20,10 @@ class User(AbstractUser):
 
     def save(self, *args, **kwargs):
         if not self.profile:
-            self.profile = Parent.objects.create()
+            self.profile, created = Parent.objects.get_or_create(email=self.email)
+            if created:
+                family = Family.objects.create()
+                family.parents.add(self.profile)
         super().save(*args, **kwargs)
 
 
