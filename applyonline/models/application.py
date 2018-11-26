@@ -1,11 +1,13 @@
 import uuid
 from django.db import models
 from django.dispatch import receiver
-from django.db.models.signals import post_save
+from django.utils import timezone
+from django.db.models.signals import post_save, m2m_changed
 
 from dateutil.relativedelta import relativedelta
 from decimal import Decimal
-from django.db.models.signals import m2m_changed
+
+from applyonline.models import Action
 
 from field_history.tracker import FieldHistoryTracker
 
@@ -54,6 +56,7 @@ class Application(models.Model):
     )
 
     REQUIRED_M2M = ('families')
+    REQUIRED = ('applying_for', 'current_grade')
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
@@ -63,8 +66,8 @@ class Application(models.Model):
     complete = models.BooleanField('Completed?', default=False)
 
     # Form fields
-    applying_for = models.IntegerField('Grade level applying for', choices=GRADE_LEVEL_CHOICES, default=999)
-    current_grade = models.IntegerField('Current grade level', choices=(*GRADE_LEVEL_CHOICES, (-999, 'No school')), default=999)
+    applying_for = models.IntegerField('Grade level applying for', choices=GRADE_LEVEL_CHOICES, null=True)
+    current_grade = models.IntegerField('Current grade level', choices=(*GRADE_LEVEL_CHOICES, (-999, 'No school')), null=True)
 
     # Scheduling (preschool)
     schedule_time = models.IntegerField('Schedule preference (Times)', choices=TIME_CHOICES, default=0)
@@ -72,7 +75,10 @@ class Application(models.Model):
     schedule_more = models.CharField('Scheduling notes', max_length=254, blank=True)
 
     # Other school applications
-    other_schools = models.ManyToManyField('OtherSchool')
+    other_schools = models.ManyToManyField('OtherSchool', blank=True)
+
+    # Actions
+    actions = models.ManyToManyField('Action', blank=True)
 
     # Calculated fields
     student_age_months = models.IntegerField('Age in Months (School Year Start)', default=0)
@@ -86,11 +92,11 @@ class Application(models.Model):
         self.student_age_months = rd.years * 12 + rd.months
         self.student_age_years = Decimal(rd.years) + Decimal(rd.months) / Decimal(12.0)
 
-        self.complete = True if self.percent_complete == 100 else False
+        self.complete = self.check_complete()
 
         super().save(*args, **kwargs)
 
-    def complete_incomplete(self):
+    def complete_incomplete(self, return_complete=False, return_incomplete=False, return_both=True):
         incomplete = []
         complete = []
         for field in self._meta.get_fields():
@@ -101,11 +107,25 @@ class Application(models.Model):
                     if field.name in self.REQUIRED_M2M:
                         incomplete += [field.name]
             elif getattr(self, field.name, None) is None:
-                incomplete += [field.name]
+                if field.name in self.REQUIRED:
+                    incomplete += [field.name]
             else:
                 complete += [field.name]
 
-        return complete, incomplete
+        if return_complete and not return_incomplete:
+            return complete
+        elif return_incomplete and not return_complete:
+            return incomplete
+        elif return_both or return_complete and return_incomplete:
+            return complete, incomplete
+        else:
+            raise ValueError('Must return either complete, incomplete, or both')
+
+    def check_complete(self):
+        if len(self.incomplete_fields) == 0:
+            return True
+        else:
+            return False
 
     @property
     def percent_complete(self):
@@ -114,11 +134,23 @@ class Application(models.Model):
 
     @property
     def incomplete_fields(self):
-        complete, incomplete = self.complete_incomplete()
-        return incomplete
+        return self.complete_incomplete(return_incomplete=True)
+
+    @property
+    def complete_fields(self):
+        return self.complete_incomplete(return_complete=True)
 
 
 @receiver(m2m_changed, sender=Application.families.through)
-def save_after_adding(sender, instance=None, action=None, **kwargs):
+def check_completion_after_adding(sender, instance=None, action=None, **kwargs):
     if action == "post_add":
-        instance.save()
+        if instance.check_complete():
+            instance.save()
+
+
+@receiver(post_save, sender=Application)
+def auto_actions(sender, instance=None, created=False, *args, **kwargs):
+    if created:
+        instance.actions.add(Action.objects.create(type=Action.STARTED_APPLICATION, date=timezone.now()))
+    if instance.complete:
+        instance.actions.add(Action.objects.create(type=Action.COMPLETED_APPLICATION, date=timezone.now()))

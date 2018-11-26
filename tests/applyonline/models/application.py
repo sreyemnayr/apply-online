@@ -31,15 +31,25 @@ class TestApplicationModel:
         assert obj.percent_complete < 100, "Should not be complete"
         assert obj.complete is False, "Should not be complete"
 
+        obj.current_grade = 0
+        obj.applying_for = 1
+        obj.save()
+
+        assert 'current_grade' in obj.complete_fields, "Current grade should be in list of completed fields"
+
         family = factories.FamilyFactory.create()
         obj.families.add(family)
 
-        #obj.save()
-
         assert family in obj.families.all(), "Family in families?"
 
-        assert obj.percent_complete == 100, f"Should now be complete {obj.incomplete_fields}"
+        assert obj.percent_complete == 100, f"Should now be complete. Incomplete fields: {obj.incomplete_fields}"
         assert obj.complete is True, "Should be complete"
+
+    def test_complete_incomplete_exception(self):
+        obj = factories.ApplicationFactory.create()
+
+        with pytest.raises(ValueError, message="Expecting ValueError"):
+            obj.complete_incomplete(return_both=False)
 
 
 @pytest.mark.application

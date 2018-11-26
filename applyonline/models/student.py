@@ -46,7 +46,7 @@ class Student(models.Model):
     dob = models.DateField('Date of Birth')
     gender = models.CharField('Gender', max_length=1, choices=GENDER_CHOICES, default=NONBINARY)
     description = models.CharField('Describe your child', max_length=254, blank=True)
-    schools_attended = models.ManyToManyField('OtherSchool', related_name='students_attended')
+    schools_attended = models.ManyToManyField('OtherSchool', related_name='students_attended', blank=True)
     current_school = models.ForeignKey('OtherSchool', on_delete=models.PROTECT, null=True, related_name='students_current')
-    evaluations = models.ManyToManyField('Evaluation')
+    evaluations = models.ManyToManyField('Evaluation', blank=True)
 

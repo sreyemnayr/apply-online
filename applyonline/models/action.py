@@ -1,5 +1,6 @@
 import uuid
 from django.db import models
+from django.contrib.auth import get_user_model
 from field_history.tracker import FieldHistoryTracker
 
 
@@ -37,6 +38,6 @@ class Action(models.Model):
     type = models.IntegerField('Type of Action', choices=ACTION_CHOICES, default=OTHER)
     date = models.DateTimeField('Date/Time')
     description = models.CharField('Notes', max_length=254, blank=True)
-    user = models.ForeignKey('User', on_delete=models.PROTECT, null=True)
+    # user = models.ForeignKey(get_user_model(), on_delete=models.PROTECT, null=True)
 
     field_history = FieldHistoryTracker(['description'])
