@@ -7,6 +7,7 @@ from django.views.generic.base import RedirectView
 from drf_auto_endpoint.router import router
 from rest_framework.authtoken import views
 from .users.views import UserViewSet, UserCreateViewSet
+from applyonline.views import home
 
 # router = DefaultRouter()
 # router.register(r'users', UserViewSet)
@@ -23,6 +24,7 @@ urlpatterns = [
 
     # the 'api-root' from django rest-frameworks default router
     # http://www.django-rest-framework.org/api-guide/routers/#defaultrouter
-    re_path(r'^$', RedirectView.as_view(url=reverse_lazy('api-root'), permanent=False)),
+    # re_path(r'^$', RedirectView.as_view(url=reverse_lazy('api-root'), permanent=False)),
+    re_path(r'^$', home),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

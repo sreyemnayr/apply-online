@@ -1,7 +1,7 @@
 import uuid
 from django.db import models
 from address.models import AddressField
-from phone_field import PhoneField
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Parent(models.Model):
@@ -34,8 +34,8 @@ class Parent(models.Model):
     last_name = models.CharField('Last Name', max_length=50)
     dob = models.DateField('Date of Birth', null=True)
     relationship = models.CharField('Relationship', max_length=2, choices=RELATIONSHIP_CHOICES, default=LEGALGUARDIAN)
-    mobile_phone = PhoneField('Mobile Phone', blank=True)
-    work_phone = PhoneField('Work Phone', blank=True)
+    mobile_phone = PhoneNumberField('Mobile Phone', blank=True)
+    work_phone = PhoneNumberField('Work Phone', blank=True)
     schools_attended = models.ManyToManyField('OtherSchool', blank=True)
     hometown = models.CharField('Hometown', max_length=50, blank=True)
     employer = models.CharField('Employer', max_length=50, blank=True)
@@ -58,4 +58,5 @@ class Family(models.Model):
     connections = models.BooleanField('Connections to school?', default=False)
     connections_more = models.TextField('More info', blank=True)
     address = AddressField(on_delete=models.CASCADE, null=-True)
+    home_phone = PhoneNumberField('Home Phone', blank=True)
 

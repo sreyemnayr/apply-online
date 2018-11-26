@@ -1,0 +1,19 @@
+{% load render_bundle from webpack_loader %}
+
+<html  lang="en">
+<head>
+<meta  charset="UTF-8">
+<base  href="/">
+<title>Apply Online</title>
+</head>
+<body>
+
+<app-root></app-root>
+
+{% render_bundle 'runtime' %}
+{% render_bundle 'polyfills' %}
+{% render_bundle 'styles' %}
+{% render_bundle 'main' %}
+
+</body>
+</html>

@@ -2,6 +2,8 @@ import os
 import dj_database_url
 import subprocess
 import logging
+import warnings
+from django.utils.deprecation import RemovedInDjango30Warning
 from .common import Common
 import better_exceptions
 
@@ -15,6 +17,7 @@ SHELL_PLUS_PRINT_SQL = True
 better_exceptions.MAX_LENGTH = None
 
 logging.getLogger("factory").setLevel(logging.WARN)
+warnings.filterwarnings(action="ignore", category=RemovedInDjango30Warning)
 
 
 class Local(Common):

@@ -57,3 +57,7 @@ python-dateutil==2.7.5
 # Address / Phone fields
 django-address==0.2.0
 django-phone-field==1.6.0
+django-phonenumber-field==2.1.0
+phonenumbers==8.10.0
+
+django-webpack-loader==0.6.0

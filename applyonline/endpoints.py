@@ -4,7 +4,7 @@ import applyonline.models as models
 from address.models import Address
 
 router.register(models.Application)
-router.register(models.Student)
+router.register(models.Student, url='students')
 router.register(models.Family)
 router.register(models.Evaluation)
 router.register(models.OtherSchool)

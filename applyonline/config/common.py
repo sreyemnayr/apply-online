@@ -8,6 +8,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 class Common(Configuration):
+    BASE_DIR = BASE_DIR
 
     INSTALLED_APPS = (
         'django.contrib.admin',
@@ -26,10 +27,14 @@ class Common(Configuration):
         'field_history',
         'address',
         'phone_field',
+        'phonenumber_field',
+        'webpack_loader',
 
         # Your apps
         'applyonline.users',
         'applyonline',
+
+
 
     )
 
@@ -79,7 +84,9 @@ class Common(Configuration):
     # Static files (CSS, JavaScript, Images)
     # https://docs.djangoproject.com/en/2.0/howto/static-files/
     STATIC_ROOT = os.path.normpath(join(os.path.dirname(BASE_DIR), 'static'))
-    STATICFILES_DIRS = []
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, "../front/dist/front"),
+    ]
     STATIC_URL = '/static/'
     STATICFILES_FINDERS = (
         'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -216,4 +223,13 @@ class Common(Configuration):
     # DRF-schema-adapter export settings
     EXPORTER_ADAPTER = 'export_app.adapters.Angular2Adapter'
     EXPORTER_FRONT_APPLICATION_NAME = 'applyonline-angular'
-    EXPORTER_ROUTER_PATH = 'applyonline.endpoints.router'
+    EXPORTER_ROUTER_PATH = 'applyonline.urls.router'
+
+    PHONENUMBER_DEFAULT_REGION = 'US'
+    PHONENUMBER_DB_FORMAT = 'NATIONAL'
+
+    WEBPACK_LOADER = {
+        'DEFAULT': {
+            'BUNDLE_DIR_NAME': ''  # end with slash
+        }
+    }
