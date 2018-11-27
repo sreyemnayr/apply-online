@@ -1,0 +1,9 @@
+$aofront-nature-primary: mat-palette($mat-brown, 700, 300, 900);
+$aofront-nature-accent: mat-palette($mat-deep-purple, 300);
+$aofront-nature-warn: mat-palette($mat-red, 600);
+
+$aofront-nature-theme: mat-light-theme(
+  $aofront-nature-primary,
+  $aofront-nature-accent,
+  $aofront-nature-warn
+);
