@@ -1,10 +1,13 @@
 import os
 from os.path import join
 from distutils.util import strtobool
+import datetime
 import dj_database_url
 from django.db import models
 from configurations import Configuration
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+print(BASE_DIR)
+print(os.path.normpath(join(os.path.dirname(BASE_DIR), 'static')))
 
 
 class Common(Configuration):
@@ -85,7 +88,7 @@ class Common(Configuration):
     # https://docs.djangoproject.com/en/2.0/howto/static-files/
     STATIC_ROOT = os.path.normpath(join(os.path.dirname(BASE_DIR), 'static'))
     STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, "../front/dist/front"),
+        os.path.normpath(join(BASE_DIR, 'static'))
     ]
     STATIC_URL = '/static/'
     STATICFILES_FINDERS = (
@@ -211,10 +214,17 @@ class Common(Configuration):
             'rest_framework.permissions.IsAuthenticated',
         ],
         'DEFAULT_AUTHENTICATION_CLASSES': (
+            'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
             'rest_framework.authentication.SessionAuthentication',
             'rest_framework.authentication.TokenAuthentication',
         )
     }
+
+    JWT_AUTH = {
+        'JWT_ALLOW_REFRESH': True,
+        'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=3600),
+    }
+
     # django-field-history - use Integers
     FIELD_HISTORY_OBJECT_ID_TYPE = models.UUIDField
 
@@ -230,6 +240,6 @@ class Common(Configuration):
 
     WEBPACK_LOADER = {
         'DEFAULT': {
-            'BUNDLE_DIR_NAME': ''  # end with slash
+            'BUNDLE_DIR_NAME': 'aofront/'  # end with slash
         }
     }
