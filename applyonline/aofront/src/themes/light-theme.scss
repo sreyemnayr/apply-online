@@ -1,9 +1,0 @@
-$aofront-light-primary: mat-palette($mat-grey, 200, 500, 300);
-$aofront-light-accent: mat-palette($mat-brown, 200);
-$aofront-light-warn: mat-palette($mat-deep-orange, 200);
-
-$aofront-light-theme: mat-light-theme(
-  $aofront-light-primary,
-  $aofront-light-accent,
-  $aofront-light-warn
-);

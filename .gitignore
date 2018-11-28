@@ -338,3 +338,5 @@ afterschool/media/
 
 .pytest_cache/
 
+webpack-stats.json
+applyonline/static/aofront/*

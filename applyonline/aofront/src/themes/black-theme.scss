@@ -1,9 +1,0 @@
-$aofront-black-primary: mat-palette($mat-grey, 700, 300, 900);
-$aofront-black-accent: mat-palette($mat-blue-grey, 400);
-$aofront-black-warn: mat-palette($mat-red, 500);
-
-$aofront-black-theme: mat-dark-theme(
-  $aofront-black-primary,
-  $aofront-black-accent,
-  $aofront-black-warn
-);
