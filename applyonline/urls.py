@@ -6,6 +6,7 @@ from django.views.generic.base import RedirectView
 # from rest_framework.routers import DefaultRouter
 from drf_auto_endpoint.router import router
 from rest_framework.authtoken import views
+from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 from .users.views import UserViewSet, UserCreateViewSet
 from applyonline.views import home
 
@@ -26,5 +27,7 @@ urlpatterns = [
     # http://www.django-rest-framework.org/api-guide/routers/#defaultrouter
     # re_path(r'^$', RedirectView.as_view(url=reverse_lazy('api-root'), permanent=False)),
     re_path(r'^$', home),
+    path(r'api-token-auth/', obtain_jwt_token),
+    path(r'api-token-refresh/', refresh_jwt_token),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
