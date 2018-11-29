@@ -32,7 +32,8 @@
   "aofront.footer.changelog": "Show changelog",
   "aofront.header.github": "Project Github Repository",
   "aofront.menu.about": "About",
-  "aofront.menu.examples": "Examples",
+  "aofront.menu.applications": "applications",
+  "aofront.menu.applicationform": "Application Form",
   "aofront.menu.features": "Features",
   "aofront.menu.login": "Sign in",
   "aofront.menu.logout": "Logout",
@@ -58,6 +59,6 @@
   "aofront.settings.themes.sticky-header": "Sticky header",
   "aofront.settings.themes.title": "Themes",
   "aofront.settings.title": "Settings",
-  "aofront.title.long": "Apply to St. George's Episcopal School",
-  "aofront.title.short": "Apply to SGES"
+  "aofront.title.long": "Angular NgRx Material Starter",
+  "aofront.title.short": "Angular Starter"
 }

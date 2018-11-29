@@ -1,0 +1,3 @@
+[submodule "applyonline/aofront"]
+	path = applyonline/aofront
+	url = https://github.com/sreyemnayr/aofront.git
