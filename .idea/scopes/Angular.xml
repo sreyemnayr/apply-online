@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Angular" pattern="file[apply-online]:applyonline/aofront//*&amp;&amp;!file[apply-online]:applyonline/aofront/node_modules/*&amp;&amp;!file[apply-online]:applyonline/aofront/node_modules//*" />
+</component>

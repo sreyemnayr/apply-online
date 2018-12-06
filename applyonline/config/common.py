@@ -217,7 +217,8 @@ class Common(Configuration):
             'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
             'rest_framework.authentication.SessionAuthentication',
             'rest_framework.authentication.TokenAuthentication',
-        )
+        ),
+        'DEFAULT_METADATA_CLASS': 'drf_auto_endpoint.metadata.AutoMetadata',
     }
 
     JWT_AUTH = {
@@ -231,6 +232,7 @@ class Common(Configuration):
     GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 
     # DRF-schema-adapter export settings
+    DRF_AUTO_METADATA_ADAPTER = 'drf_auto_endpoint.adapters.AngularFormlyAdapter'
     EXPORTER_ADAPTER = 'export_app.adapters.Angular2Adapter'
     EXPORTER_FRONT_APPLICATION_NAME = 'applyonline-angular'
     EXPORTER_ROUTER_PATH = 'applyonline.urls.router'
