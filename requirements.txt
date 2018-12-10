@@ -5,6 +5,10 @@ django-configurations==2.1
 gunicorn==19.9.0
 newrelic==4.6.0.106
 
+# Auth
+django-allauth==0.38.0
+django-rest-auth==0.9.3
+
 # For the persistence stores
 psycopg2-binary==2.7.6.1
 dj-database-url==0.5.0

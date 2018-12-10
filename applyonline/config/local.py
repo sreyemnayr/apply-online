@@ -40,7 +40,7 @@ class Local(Common):
     DATABASES = Common.DATABASES
     DATABASES["default"] = dj_database_url.config(default=db_config.decode("utf8"))
 
-    EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
+    # EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
 
 
 

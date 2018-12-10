@@ -20,6 +20,7 @@ class Common(Configuration):
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
+        'django.contrib.sites',
 
 
         # Third party apps
@@ -33,13 +34,26 @@ class Common(Configuration):
         'phonenumber_field',
         'webpack_loader',
 
+
+
         # Your apps
         'applyonline.users',
         'applyonline',
 
+        # All-auth
+        'allauth',
+        'allauth.account',
+        'allauth.socialaccount',
+        'allauth.socialaccount.providers.google',
+
+        'rest_auth',
+        'rest_auth.registration',
+
 
 
     )
+
+    SITE_ID = 1
 
     # https://docs.djangoproject.com/en/2.0/topics/http/middleware/
     MIDDLEWARE = (
@@ -201,6 +215,13 @@ class Common(Configuration):
     # Custom user app
     AUTH_USER_MODEL = 'users.User'
 
+    AUTHENTICATION_BACKENDS = (
+        # Needed to login by username in Django admin, regardless of `allauth`
+        'django.contrib.auth.backends.ModelBackend',
+        # `allauth` specific authentication methods, such as login by e-mail
+        'allauth.account.auth_backends.AuthenticationBackend',
+    )
+
     # Django Rest Framework
     REST_FRAMEWORK = {
         'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
@@ -221,9 +242,27 @@ class Common(Configuration):
         'DEFAULT_METADATA_CLASS': 'drf_auto_endpoint.metadata.AutoMetadata',
     }
 
+    REST_USE_JWT = True
+
     JWT_AUTH = {
         'JWT_ALLOW_REFRESH': True,
         'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=3600),
+    }
+
+    ACCOUNT_EMAIL_REQUIRED = True
+    ACCOUNT_EMAIL_VERIFICATION = 'optional'
+    ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+
+    SOCIALACCOUNT_PROVIDERS = {
+        'google': {
+            'SCOPE': [
+                'profile',
+                'email',
+            ],
+            'AUTH_PARAMS': {
+                'access_type': 'offline',
+            }
+        }
     }
 
     # django-field-history - use Integers
