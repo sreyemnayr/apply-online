@@ -31,5 +31,24 @@ if __name__ == "__main__":
         from django.contrib.auth import get_user_model
         User = get_user_model()
         User.objects.create_superuser('admin', 'admin@admin.com', 'admin')
+        from tests.applyonline.factories import model_factories
+
+        u = User.objects.create_superuser('bigfam', 'bigfam@bigfam.com', 'bigfam')
+        parent = u.profile
+        family = parent.family_set.first()
+
+        p = model_factories.ParentFactory()
+        family.parents.add(p)
+        p = model_factories.ParentFactory()
+        family.parents.add(p)
+
+        s = model_factories.StudentFactory()
+        family.students.add(s)
+        s = model_factories.StudentFactory()
+        family.students.add(s)
+        s = model_factories.StudentFactory()
+        family.students.add(s)
+        s = model_factories.StudentFactory()
+        family.students.add(s)
 
     execute_from_command_line(sys.argv)

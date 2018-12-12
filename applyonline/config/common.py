@@ -26,7 +26,8 @@ class Common(Configuration):
         # Third party apps
         'rest_framework',            # utilities for rest apis
         'rest_framework.authtoken',  # token authentication
-        'django_filters',            # for filtering rest endpoints
+        #'django_filters',            # for filtering rest endpoints
+        'rest_framework_filters',
         'drf_auto_endpoint',
         'field_history',
         'address',
