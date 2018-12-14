@@ -54,7 +54,7 @@ class Family(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField('First Name', max_length=50, default="My Family")
     students = models.ManyToManyField('Student', blank=True, related_name='families')
-    parents = models.ManyToManyField('Parent', blank=True)
+    parents = models.ManyToManyField('Parent', blank=True, related_name='families')
     connections = models.BooleanField('Connections to school?', default=False)
     connections_more = models.TextField('More info', blank=True)
     address = AddressField(on_delete=models.CASCADE, null=-True)

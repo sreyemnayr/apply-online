@@ -26,6 +26,7 @@ class StudentFilter(filters.FilterSet):
         model = models.Student
         fields = {'id': ['exact', 'in', 'startswith']}
 
+
 class FamilySerializer(serializers.ModelSerializer):
     id = serializers.UUIDField()
     name = serializers.CharField()
@@ -33,6 +34,29 @@ class FamilySerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Family
         fields = ('id', 'name')
+
+
+class ParentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Parent
+        fields = '__all__'
+
+
+class FamilyNestedSerializer(WritableNestedModelSerializer):
+    parents = ParentSerializer(many=True)
+
+    class Meta:
+        model = models.Family
+        fields = '__all__'
+        extra_fields = ('parents',)
+
+    def get_field_names(self, declared_fields, info):
+        expanded_fields = super().get_field_names(declared_fields, info)
+
+        if getattr(self.Meta, 'extra_fields', None):
+            return expanded_fields + self.Meta.extra_fields
+        else:
+            return expanded_fields
 
 
 class StudentNestedSerializer(WritableNestedModelSerializer):
@@ -48,7 +72,7 @@ class StudentViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         parent = user.profile
-        families = parent.family_set.all()
+        families = parent.families.all()
         students = models.Student.objects.filter(families__in=families)
         return students
 
@@ -57,7 +81,7 @@ class FamilyViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user=self.request.user
         parent = user.profile
-        families = parent.family_set.all()
+        families = parent.families.all()
         return families
 
 
@@ -71,6 +95,13 @@ class StudentFilterEndpoint(Endpoint):
 class FamilyFilterEndpoint(Endpoint):
     model = models.Family
     base_viewset = FamilyViewSet
+    base_serializer = FamilyNestedSerializer
+
+@register
+class ParentFilterEndpoint(Endpoint):
+    model = models.Parent
+    filter_fields = ('families',)
+
 
 
 router.register(models.Student, url='students')
@@ -78,7 +109,7 @@ router.register(models.Application, url='applications')
 router.register(models.Family, url='families')
 router.register(models.Evaluation)
 router.register(models.OtherSchool)
-router.register(models.Parent)
+router.register(models.Parent, url='parents')
 router.register(models.SchoolYear)
 router.register(models.Sibling)
 router.register(Address)

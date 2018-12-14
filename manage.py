@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
         u = User.objects.create_superuser('bigfam', 'bigfam@bigfam.com', 'bigfam')
         parent = u.profile
-        family = parent.family_set.first()
+        family = parent.families.first()
 
         p = model_factories.ParentFactory()
         family.parents.add(p)
