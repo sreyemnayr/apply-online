@@ -24,7 +24,7 @@ class StudentFactory(DjangoModelFactory):
     middle_name = factory.Faker("first_name")
     preferred_name = factory.Faker("first_name")
     last_name = factory.Faker("last_name")
-    dob = factory.Faker("past_date")
+    dob = factory.Faker("date_this_decade")
 
 
 class FamilyFactory(DjangoModelFactory):
@@ -48,8 +48,8 @@ class SchoolYearFactory(DjangoModelFactory):
     class Meta:
         model = applyonline.models.SchoolYear
 
-    label = "2018-2019"
-    start = factory.Faker("past_date")
+    label = "2019-2020"
+    start = factory.Faker("date_this_decade")
     end = factory.Faker("future_date")
     open = True
 

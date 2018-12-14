@@ -62,7 +62,7 @@ class Application(models.Model):
 
     student = models.ForeignKey('Student', on_delete=models.PROTECT)
     school_year = models.ForeignKey('SchoolYear', on_delete=models.PROTECT)
-    families = models.ManyToManyField('Family')
+
     complete = models.BooleanField('Completed?', default=False)
 
     # Form fields
@@ -141,7 +141,7 @@ class Application(models.Model):
         return self.complete_incomplete(return_complete=True)
 
 
-@receiver(m2m_changed, sender=Application.families.through)
+@receiver(m2m_changed, sender=Application.student)
 def check_completion_after_adding(sender, instance=None, action=None, **kwargs):
     if action == "post_add":
         if instance.check_complete():

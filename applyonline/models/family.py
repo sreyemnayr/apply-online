@@ -1,7 +1,24 @@
 import uuid
 from django.db import models
-from address.models import AddressField
+#from address.models import AddressField
 from phonenumber_field.modelfields import PhoneNumberField
+
+
+class Address(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    raw = models.CharField('Search String', max_length=128)
+    street_number = models.CharField('Street Number', max_length=50)
+    route = models.CharField('Street Name', max_length=50)
+    city = models.CharField('City', max_length=50)
+    state = models.CharField('State', max_length=50)
+    state_code = models.CharField('State Abbreviation', max_length=4)
+    postal_code = models.CharField('ZIP Code', max_length=5)
+    postal_code_suffix = models.CharField('ZIP+4', max_length=4)
+    country = models.CharField('Country', max_length=50)
+    country_code = models.CharField('Country Abbreviation', max_length=10)
+    neighborhood = models.CharField('Neighborhood', max_length=50)
+    parish = models.CharField('Parish/County', max_length=50)
+
 
 
 class Parent(models.Model):
@@ -57,6 +74,6 @@ class Family(models.Model):
     parents = models.ManyToManyField('Parent', blank=True, related_name='families')
     connections = models.BooleanField('Connections to school?', default=False)
     connections_more = models.TextField('More info', blank=True)
-    address = AddressField(on_delete=models.CASCADE, null=-True)
+    address = models.ForeignKey('Address', on_delete=models.PROTECT, null=-True)
     home_phone = PhoneNumberField('Home Phone', blank=True)
 

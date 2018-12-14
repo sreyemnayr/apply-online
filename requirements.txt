@@ -28,6 +28,7 @@ Markdown==3.0.1
 drf-schema-adapter==0.9.77
 djangorestframework-jwt==1.11.0
 djangorestframework-filters==0.10.2.post0
+drf-writable-nested==0.5.1
 
 # Developer Tools
 ipdb==0.11

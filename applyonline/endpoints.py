@@ -5,10 +5,9 @@ from rest_framework import viewsets, serializers
 
 import rest_framework_filters as filters
 
-from drf_writable_nested import WritableNestedModelSerializer
+from drf_writable_nested import WritableNestedModelSerializer, UniqueFieldsMixin
 
 import applyonline.models as models
-from address.models import Address
 
 
 class FamilyFilter(filters.FilterSet):
@@ -17,14 +16,6 @@ class FamilyFilter(filters.FilterSet):
         fields = {'id': ['exact'],
                   'students': ['in']
                   }
-
-
-class StudentFilter(filters.FilterSet):
-    # families = filters.RelatedFilter(FamilyFilter, name="families")
-
-    class Meta:
-        model = models.Student
-        fields = {'id': ['exact', 'in', 'startswith']}
 
 
 class FamilySerializer(serializers.ModelSerializer):
@@ -42,8 +33,15 @@ class ParentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class AddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Address
+        fields = '__all__'
+
+
 class FamilyNestedSerializer(WritableNestedModelSerializer):
     parents = ParentSerializer(many=True)
+    address = AddressSerializer()
 
     class Meta:
         model = models.Family
@@ -66,6 +64,13 @@ class StudentNestedSerializer(WritableNestedModelSerializer):
         model = models.Student
         fields = ('first_name', 'last_name', 'preferred_name', 'middle_name', 'dob', 'gender', 'families')
 
+
+class ApplicationSerializer(WritableNestedModelSerializer):
+    student = StudentNestedSerializer()
+
+    class Meta:
+        model = models.Application
+        fields = '__all__'
 
 
 class StudentViewSet(viewsets.ModelViewSet):
@@ -102,6 +107,11 @@ class ParentFilterEndpoint(Endpoint):
     model = models.Parent
     filter_fields = ('families',)
 
+@register(url='appflow')
+class ApplicationFlowEndpoint(Endpoint):
+    model = models.Application
+    base_serializer = ApplicationSerializer
+
 
 
 router.register(models.Student, url='students')
@@ -112,7 +122,7 @@ router.register(models.OtherSchool)
 router.register(models.Parent, url='parents')
 router.register(models.SchoolYear)
 router.register(models.Sibling)
-router.register(Address)
+router.register(models.Address)
 
 
 

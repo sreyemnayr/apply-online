@@ -30,7 +30,7 @@ class Common(Configuration):
         'rest_framework_filters',
         'drf_auto_endpoint',
         'field_history',
-        'address',
+        #'address',
         'phone_field',
         'phonenumber_field',
         'webpack_loader',

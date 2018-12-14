@@ -25,6 +25,8 @@ if __name__ == "__main__":
 
     if sys.argv[1] == 'runserver':
         import django
+        from datetime import date
+
         django.setup()
         call_command('migrate')
         call_command('createinitialfieldhistory')
@@ -33,22 +35,37 @@ if __name__ == "__main__":
         User.objects.create_superuser('admin', 'admin@admin.com', 'admin')
         from tests.applyonline.factories import model_factories
 
-        u = User.objects.create_superuser('bigfam', 'bigfam@bigfam.com', 'bigfam')
-        parent = u.profile
-        family = parent.families.first()
+        for n in ['bigfam', 'fam2', 'fam3', 'fam4', 'fam5', 'fam6', 'fam7', 'fam8']:
+            u = User.objects.create_superuser(n, f'{n}@bigfam.com', n)
+            parent = u.profile
+            family = parent.families.first()
 
-        p = model_factories.ParentFactory()
-        family.parents.add(p)
-        p = model_factories.ParentFactory()
-        family.parents.add(p)
+            p = model_factories.ParentFactory()
+            family.parents.add(p)
+            p = model_factories.ParentFactory()
+            family.parents.add(p)
 
-        s = model_factories.StudentFactory()
-        family.students.add(s)
-        s = model_factories.StudentFactory()
-        family.students.add(s)
-        s = model_factories.StudentFactory()
-        family.students.add(s)
-        s = model_factories.StudentFactory()
-        family.students.add(s)
+            s1 = model_factories.StudentFactory()
+            family.students.add(s1)
+            s2 = model_factories.StudentFactory()
+            family.students.add(s2)
+            s3 = model_factories.StudentFactory()
+            family.students.add(s3)
+            s4 = model_factories.StudentFactory()
+            family.students.add(s4)
+
+            school_year = model_factories.SchoolYearFactory(start=date(2019,8,7), end=date(2020,5,30), open=True)
+
+            for s in [s1, s2, s3, s4]:
+                a = model_factories.ApplicationFactory.create(school_year=school_year, student=s)
+                s.save()
+                a.save()
+
+
+
+
+
+
+
 
     execute_from_command_line(sys.argv)

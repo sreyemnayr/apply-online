@@ -37,10 +37,10 @@ class TestApplicationModel:
 
         assert 'current_grade' in obj.complete_fields, "Current grade should be in list of completed fields"
 
-        family = factories.FamilyFactory.create()
-        obj.families.add(family)
+        # family = factories.FamilyFactory.create()
+        # obj.families.add(family)
 
-        assert family in obj.families.all(), "Family in families?"
+        # assert family in obj.families.all(), "Family in families?"
 
         assert obj.percent_complete == 100, f"Should now be complete. Incomplete fields: {obj.incomplete_fields}"
         assert obj.complete is True, "Should be complete"
