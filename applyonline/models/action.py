@@ -19,25 +19,31 @@ class Action(models.Model):
     MAILING = 92
     OTHER = 99
     ACTION_CHOICES = (
-        (STARTED_APPLICATION, 'Started Application'),
-        (COMPLETED_APPLICATION, 'Completed Application'),
-        (APPLICATION_REVIEWED, 'Reviewed Application'),
-        (SCHEDULED_TOUR, 'Tour Scheduled'),
-        (COMPLETED_TOUR, 'Tour Completed'),
-        (TOUR_FOLLOWUP, 'Tour Follow-Up'),
-        (PREPARED_CONTRACT, 'Prepared Contract'),
-        (SENT_CONTRACT, 'Sent Contract'),
-        (RETURNED_CONTRACT, 'Contract Returned'),
-        (EMAIL, 'Email Communication'),
-        (PHONE_CALL, 'Phone Call'),
-        (MAILING, 'Physical Mailing'),
-        (OTHER, 'Other'),
+        (STARTED_APPLICATION, "Started Application"),
+        (COMPLETED_APPLICATION, "Completed Application"),
+        (APPLICATION_REVIEWED, "Reviewed Application"),
+        (SCHEDULED_TOUR, "Tour Scheduled"),
+        (COMPLETED_TOUR, "Tour Completed"),
+        (TOUR_FOLLOWUP, "Tour Follow-Up"),
+        (PREPARED_CONTRACT, "Prepared Contract"),
+        (SENT_CONTRACT, "Sent Contract"),
+        (RETURNED_CONTRACT, "Contract Returned"),
+        (EMAIL, "Email Communication"),
+        (PHONE_CALL, "Phone Call"),
+        (MAILING, "Physical Mailing"),
+        (OTHER, "Other"),
     )
 
+    WAITING_ON = -1
+    TODO = 0
+    COMPLETE = 1
+    STATUS_CHOICES = ((WAITING_ON, "Waiting"), (TODO, "To-do"), (COMPLETE, "Completed"))
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    type = models.IntegerField('Type of Action', choices=ACTION_CHOICES, default=OTHER)
-    date = models.DateTimeField('Date/Time')
-    description = models.CharField('Notes', max_length=254, blank=True)
+    type = models.IntegerField("Type of Action", choices=ACTION_CHOICES, default=OTHER)
+    date = models.DateTimeField("Date/Time")
+    description = models.CharField("Notes", max_length=254, blank=True)
+    status = models.IntegerField("Status", choices=STATUS_CHOICES, default=COMPLETE)
     # user = models.ForeignKey(get_user_model(), on_delete=models.PROTECT, null=True)
 
-    field_history = FieldHistoryTracker(['description'])
+    field_history = FieldHistoryTracker(["description"])

@@ -17,8 +17,8 @@ class TestApplicationModel:
         assert obj.student.pk is not None, "Should create a new Student instance"
 
     def test_dob_conversion(self):
-        school_year = factories.SchoolYearFactory.create(start=date(2018,8,1),open=True)
-        student = factories.StudentFactory.create(dob=date(2016,8,1))
+        school_year = factories.SchoolYearFactory.create(start=date(2018, 8, 1), open=True)
+        student = factories.StudentFactory.create(dob=date(2016, 8, 1))
         obj = factories.ApplicationFactory.create(school_year=school_year, student=student)
 
         assert obj.student_age_months == 24, "Student should be 24 months"
@@ -35,14 +35,18 @@ class TestApplicationModel:
         obj.applying_for = 1
         obj.save()
 
-        assert 'current_grade' in obj.complete_fields, "Current grade should be in list of completed fields"
+        assert (
+            "current_grade" in obj.complete_fields
+        ), "Current grade should be in list of completed fields"
 
         # family = factories.FamilyFactory.create()
         # obj.families.add(family)
 
         # assert family in obj.families.all(), "Family in families?"
 
-        assert obj.percent_complete == 100, f"Should now be complete. Incomplete fields: {obj.incomplete_fields}"
+        assert (
+            obj.percent_complete == 100
+        ), f"Should now be complete. Incomplete fields: {obj.incomplete_fields}"
         assert obj.complete is True, "Should be complete"
 
     def test_complete_incomplete_exception(self):

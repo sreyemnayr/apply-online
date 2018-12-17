@@ -30,9 +30,9 @@ class Local(Common):
     INSTALLED_APPS += ("export_app",)
 
     # Mail
-    EMAIL_HOST = 'localhost'
+    EMAIL_HOST = "localhost"
     EMAIL_PORT = 1025
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
     db_config = subprocess.run(["pg_tmp", "-t"], capture_output=True).stdout
     print(str(db_config))
@@ -41,6 +41,3 @@ class Local(Common):
     DATABASES["default"] = dj_database_url.config(default=db_config.decode("utf8"))
 
     # EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
-
-
-

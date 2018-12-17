@@ -26,6 +26,20 @@ class StudentFactory(DjangoModelFactory):
     last_name = factory.Faker("last_name")
     dob = factory.Faker("date_this_decade")
 
+    class Params:
+        male = factory.Trait(
+            first_name=factory.Faker("first_name_male"),
+            middle_name=factory.Faker("first_name_male"),
+            preferred_name=factory.Faker("first_name_male"),
+            gender="M",
+        )
+        female = factory.Trait(
+            first_name=factory.Faker("first_name_female"),
+            middle_name=factory.Faker("first_name_female"),
+            preferred_name=factory.Faker("first_name_female"),
+            gender="F",
+        )
+
 
 class FamilyFactory(DjangoModelFactory):
     class Meta:
@@ -67,4 +81,3 @@ class SiblingFactory(DjangoModelFactory):
 class OtherSchoolFactory(DjangoModelFactory):
     class Meta:
         model = applyonline.models.OtherSchool
-

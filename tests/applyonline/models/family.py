@@ -14,8 +14,10 @@ class TestFamilyModel:
         assert obj.pk is not None, "Should create a new Family instance"
 
     def test_phone(self):
-        obj = factories.FamilyFactory.create(home_phone='6015550663')
-        assert str(obj.home_phone) == "+16015550663", f"Should create with phone number {obj.home_phone}"
+        obj = factories.FamilyFactory.create(home_phone="6015550663")
+        assert (
+            str(obj.home_phone) == "+16015550663"
+        ), f"Should create with phone number {obj.home_phone}"
 
 
 @pytest.mark.parent

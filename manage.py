@@ -23,20 +23,20 @@ if __name__ == "__main__":
         raise
     from django.core.management import call_command
 
-    if sys.argv[1] == 'runserver':
-        import django
+    if sys.argv[1] == "runserver":
         from datetime import date
 
         django.setup()
-        call_command('migrate')
-        call_command('createinitialfieldhistory')
+        call_command("migrate")
+        call_command("createinitialfieldhistory")
         from django.contrib.auth import get_user_model
+
         User = get_user_model()
-        User.objects.create_superuser('admin', 'admin@admin.com', 'admin')
+        User.objects.create_superuser("admin", "admin@admin.com", "admin")
         from tests.applyonline.factories import model_factories
 
-        for n in ['bigfam', 'fam2', 'fam3', 'fam4', 'fam5', 'fam6', 'fam7', 'fam8']:
-            u = User.objects.create_superuser(n, f'{n}@bigfam.com', n)
+        for n in ["bigfam", "fam2", "fam3", "fam4", "fam5", "fam6", "fam7", "fam8"]:
+            u = User.objects.create_superuser(n, f"{n}@bigfam.com", n)
             parent = u.profile
             family = parent.families.first()
 
@@ -54,18 +54,15 @@ if __name__ == "__main__":
             s4 = model_factories.StudentFactory()
             family.students.add(s4)
 
-            school_year = model_factories.SchoolYearFactory(start=date(2019,8,7), end=date(2020,5,30), open=True)
+            school_year = model_factories.SchoolYearFactory(
+                start=date(2019, 8, 7), end=date(2020, 5, 30), open=True
+            )
 
             for s in [s1, s2, s3, s4]:
-                a = model_factories.ApplicationFactory.create(school_year=school_year, student=s)
+                a = model_factories.ApplicationFactory.create(
+                    school_year=school_year, student=s
+                )
                 s.save()
                 a.save()
-
-
-
-
-
-
-
 
     execute_from_command_line(sys.argv)

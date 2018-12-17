@@ -6,14 +6,14 @@ from .family import Parent, Family, Sibling, Address
 
 
 __all__ = [
-            Application,
-            OtherSchool,
-            Student,
-            Evaluation,
-            SchoolYear,
-            Family,
-            Parent,
-            Sibling,
-            Action,
-            Address,
-          ]
+    Application,
+    OtherSchool,
+    Student,
+    Evaluation,
+    SchoolYear,
+    Family,
+    Parent,
+    Sibling,
+    Action,
+    Address,
+]
