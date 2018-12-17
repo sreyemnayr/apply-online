@@ -8,6 +8,7 @@ if __name__ == "__main__":
 
     try:
         from configurations.management import execute_from_command_line
+        import django  # noqa
     except ImportError:
         # The above import may fail for some other reason. Ensure that the
         # issue is really that Django is missing to avoid masking other
@@ -34,6 +35,7 @@ if __name__ == "__main__":
         User = get_user_model()
         User.objects.create_superuser("admin", "admin@admin.com", "admin")
         from tests.applyonline.factories import model_factories
+        from random import randint
 
         for n in ["bigfam", "fam2", "fam3", "fam4", "fam5", "fam6", "fam7", "fam8"]:
             u = User.objects.create_superuser(n, f"{n}@bigfam.com", n)
@@ -45,11 +47,11 @@ if __name__ == "__main__":
             p = model_factories.ParentFactory()
             family.parents.add(p)
 
-            s1 = model_factories.StudentFactory()
+            s1 = model_factories.StudentFactory(male=True)
             family.students.add(s1)
-            s2 = model_factories.StudentFactory()
+            s2 = model_factories.StudentFactory(female=True)
             family.students.add(s2)
-            s3 = model_factories.StudentFactory()
+            s3 = model_factories.StudentFactory(female=True)
             family.students.add(s3)
             s4 = model_factories.StudentFactory()
             family.students.add(s4)
@@ -59,8 +61,12 @@ if __name__ == "__main__":
             )
 
             for s in [s1, s2, s3, s4]:
+                applying_for = randint(-4, 8)
                 a = model_factories.ApplicationFactory.create(
-                    school_year=school_year, student=s
+                    school_year=school_year,
+                    student=s,
+                    applying_for=applying_for,
+                    current_grade=applying_for - 1 if applying_for > -4 else None,
                 )
                 s.save()
                 a.save()

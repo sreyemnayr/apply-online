@@ -37,6 +37,12 @@ class AddressSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class SchoolYearSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.SchoolYear
+        fields = ("pk", "label")
+
+
 class FamilyNestedSerializer(WritableNestedModelSerializer):
     parents = ParentSerializer(many=True)
     address = AddressSerializer()
@@ -73,6 +79,7 @@ class StudentNestedSerializer(WritableNestedModelSerializer):
 
 class ApplicationSerializer(WritableNestedModelSerializer):
     student = StudentNestedSerializer()
+    school_year = SchoolYearSerializer()
 
     class Meta:
         model = models.Application
