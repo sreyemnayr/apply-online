@@ -45,18 +45,21 @@ class SchoolYearSerializer(serializers.ModelSerializer):
 
 class FamilyNestedSerializer(WritableNestedModelSerializer):
     parents = ParentSerializer(many=True)
-    address = AddressSerializer()
+    address = AddressSerializer(allow_null=True)
 
     class Meta:
         model = models.Family
         fields = "__all__"
-        extra_fields = ("parents",)
+        extra_fields = ["parents"]
 
     def get_field_names(self, declared_fields, info):
         expanded_fields = super().get_field_names(declared_fields, info)
 
         if getattr(self.Meta, "extra_fields", None):
-            return expanded_fields + self.Meta.extra_fields
+            if type(expanded_fields) is tuple:
+                return expanded_fields + tuple(self.Meta.extra_fields)
+            else:
+                return expanded_fields + self.Meta.extra_fields
         else:
             return expanded_fields
 
@@ -77,8 +80,12 @@ class StudentNestedSerializer(WritableNestedModelSerializer):
         )
 
 
+class StudentNestedSerializerFullFamilies(StudentNestedSerializer):
+    families = FamilyNestedSerializer(many=True)
+
+
 class ApplicationSerializer(WritableNestedModelSerializer):
-    student = StudentNestedSerializer()
+    student = StudentNestedSerializerFullFamilies()
     school_year = SchoolYearSerializer()
 
     class Meta:

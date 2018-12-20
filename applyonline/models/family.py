@@ -14,11 +14,11 @@ class Address(models.Model):
     state = models.CharField("State", max_length=50)
     state_code = models.CharField("State Abbreviation", max_length=4)
     postal_code = models.CharField("ZIP Code", max_length=5)
-    postal_code_suffix = models.CharField("ZIP+4", max_length=4)
+    postal_code_suffix = models.CharField("ZIP+4", max_length=4, blank=True)
     country = models.CharField("Country", max_length=50)
     country_code = models.CharField("Country Abbreviation", max_length=10)
-    neighborhood = models.CharField("Neighborhood", max_length=50)
-    parish = models.CharField("Parish/County", max_length=50)
+    neighborhood = models.CharField("Neighborhood", max_length=50, blank=True)
+    parish = models.CharField("Parish/County", max_length=50, blank=True)
 
 
 class Parent(models.Model):
@@ -59,7 +59,7 @@ class Parent(models.Model):
     hometown = models.CharField("Hometown", max_length=50, blank=True)
     employer = models.CharField("Employer", max_length=50, blank=True)
     job_title = models.CharField("Job Title", max_length=50, blank=True)
-    email = models.EmailField(max_length=254)
+    email = models.EmailField(max_length=254, blank=True)
 
 
 class Sibling(models.Model):
@@ -76,5 +76,5 @@ class Family(models.Model):
     parents = models.ManyToManyField("Parent", blank=True, related_name="families")
     connections = models.BooleanField("Connections to school?", default=False)
     connections_more = models.TextField("More info", blank=True)
-    address = models.ForeignKey("Address", on_delete=models.PROTECT, null=-True)
+    address = models.ForeignKey("Address", on_delete=models.PROTECT, null=True)
     home_phone = PhoneNumberField("Home Phone", blank=True)
