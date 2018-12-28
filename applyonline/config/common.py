@@ -203,6 +203,7 @@ class Common(Configuration):
             "rest_framework.authentication.TokenAuthentication",
         ),
         "DEFAULT_METADATA_CLASS": "drf_auto_endpoint.metadata.AutoMetadata",
+        "DEFAULT_FILTER_BACKENDS": ("rest_framework_filters.backends.DjangoFilterBackend",),
     }
 
     REST_USE_JWT = True

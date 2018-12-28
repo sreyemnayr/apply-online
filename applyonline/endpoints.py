@@ -10,6 +10,12 @@ from drf_writable_nested import WritableNestedModelSerializer, UniqueFieldsMixin
 import applyonline.models as models
 
 
+class ApplicationFilter(filters.FilterSet):
+    class Meta:
+        model = models.Application
+        fields = {"student": ["exact"], "school_year": ["exact"]}
+
+
 class FamilyFilter(filters.FilterSet):
     class Meta:
         model = models.Family
@@ -70,6 +76,7 @@ class StudentNestedSerializer(WritableNestedModelSerializer):
     class Meta:
         model = models.Student
         fields = (
+            "id",
             "first_name",
             "last_name",
             "preferred_name",
@@ -80,8 +87,21 @@ class StudentNestedSerializer(WritableNestedModelSerializer):
         )
 
 
-class StudentNestedSerializerFullFamilies(StudentNestedSerializer):
+class StudentNestedSerializerFullFamilies(WritableNestedModelSerializer):
     families = FamilyNestedSerializer(many=True)
+
+    class Meta:
+        model = models.Student
+        fields = (
+            "id",
+            "first_name",
+            "last_name",
+            "preferred_name",
+            "middle_name",
+            "dob",
+            "gender",
+            "families",
+        )
 
 
 class ApplicationSerializer(WritableNestedModelSerializer):
@@ -93,8 +113,18 @@ class ApplicationSerializer(WritableNestedModelSerializer):
         fields = "__all__"
 
 
+class StudentApplicationSerializer(serializers.ModelSerializer):
+    student = StudentNestedSerializer
+    school_year = SchoolYearSerializer
+
+    class Meta:
+        model = models.Application
+        fields = ["student", "school_year"]
+
+
 class StudentViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
+
         user = self.request.user
         parent = user.profile
         families = parent.families.all()
@@ -108,6 +138,22 @@ class FamilyViewSet(viewsets.ModelViewSet):
         parent = user.profile
         families = parent.families.all()
         return families
+
+
+class StudentApplicationViewSet(viewsets.ModelViewSet):
+    filter_class = ApplicationFilter
+    serializer_class = ApplicationSerializer
+
+    def get_queryset(self):
+        student_pk = self.request.query_params.get("student")
+        school_year_pk = self.request.query_params.get("school_year")
+        student = models.Student.objects.get(pk=student_pk)
+        school_year = models.SchoolYear.objects.get(pk=school_year_pk)
+
+        application, created = models.Application.objects.get_or_create(
+            student=student, school_year=school_year
+        )
+        return models.Application.objects.filter(pk=application.pk)
 
 
 @register
@@ -134,6 +180,12 @@ class ParentFilterEndpoint(Endpoint):
 class ApplicationFlowEndpoint(Endpoint):
     model = models.Application
     base_serializer = ApplicationSerializer
+
+
+@register(url="studentapplication")
+class StudentApplicationEndpoint(Endpoint):
+    model = models.Application
+    base_viewset = StudentApplicationViewSet
 
 
 router.register(models.Student, url="students")
